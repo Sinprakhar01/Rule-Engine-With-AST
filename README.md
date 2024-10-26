@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rule Engine with AST - README</title>
 </head>
 <body>
 
@@ -46,10 +45,7 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 <pre><code>pip install -r requirements.txt
 </code></pre>
 
-<h3>4. Install MySQL or Run via Docker</h3>
 
-<h4>Option A: Run MySQL via Docker</h4>
-<pre><code>docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=rule_engine -p 3306:3306 -d mysql:latest
 </code></pre>
 
 <h4>Option B: Install MySQL Locally</h4>
@@ -72,8 +68,6 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 <pre><code>app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/rule_engine'
 </code></pre>
 
-<h3>Initialize Database Tables</h3>
-<p>After running the database server (locally or via Docker), create the tables by executing:</p>
 <pre><code>python index.py
 </code></pre>
 <p>The script will auto-create tables under the app context on the first run.</p>
