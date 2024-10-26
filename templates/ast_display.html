@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rule Engine With AST</title>
+    <link rel="stylesheet" href="static\styles.css">
+
+    <script>
+        // Function to create a new rule via the Flask API
+        async function createRule() {
+            const ruleString = document.getElementById("ruleInput").value;
+
+            try {
+                const response = await fetch('/api/rules/create_rule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ rule_string: ruleString }),
+                });
+                const result = await response.json();
+                document.getElementById("createResult").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error creating rule:', error);
+            }
+        }
+
+        // Function to combine multiple rules
+        async function combineRules() {
+            const rules = document.getElementById("combineInput").value.split("\n");
+
+            try {
+                const response = await fetch('/api/rules/combine_rules', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ rules }),
+                });
+                const result = await response.json();
+                document.getElementById("combineResult").innerText = JSON.stringify(result.ast, null, 2);
+            } catch (error) {
+                console.error('Error combining rules:', error);
+            }
+        }
+
+        // Function to evaluate a rule based on user data
+        async function evaluateRule() {
+            const ruleAstId = document.getElementById("ruleAstId").value;
+            const userData = {
+                age: parseInt(document.getElementById("age").value),
+                department: document.getElementById("department").value,
+                salary: parseInt(document.getElementById("salary").value),
+                experience: parseInt(document.getElementById("experience").value),
+            };
+
+            try {
+                const response = await fetch('/api/rules/evaluate_rule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ast_id: ruleAstId,
+                        user_data: userData
+                    }),
+                });
+                const result = await response.json();
+                document.getElementById("evaluationResult").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error evaluating rule:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Rule Engine</h1>
+    <div class="container">
+        <!-- Create Rule Section -->
+        <h2>Create Rule</h2>
+        <input type="text" id="ruleInput" placeholder="Enter rule (e.g., age > 30 AND salary > 20000)" size="50">
+        <button onclick="createRule()">Create Rule</button>
+        <pre id="createResult"></pre>
+
+        <!-- Combine Rules Section -->
+        <h2>Combine Rules</h2>
+        <textarea id="combineInput" placeholder="Enter one rule per line" rows="4" cols="50"></textarea>
+        <button onclick="combineRules()">Combine Rules</button>
+        <pre id="combineResult"></pre>
+
+        <!-- Evaluate Rule Section -->
+        <h2>Evaluate Rule</h2>
+        <p>Enter Rule AST ID:</p>
+        <input type="number" id="ruleAstId" placeholder="Rule AST ID">
+        <h3>User Data</h3>
+        <p>Age: <input type="number" id="age" placeholder="e.g., 35"></p>
+        <p>Department: <input type="text" id="department" placeholder="e.g., Marketing"></p>
+        <p>Salary: <input type="number" id="salary" placeholder="e.g., 65000"></p>
+        <p>Experience: <input type="number" id="experience" placeholder="e.g., 7"></p>
+        <button onclick="evaluateRule()">Evaluate Rule</button>
+        <pre id="evaluationResult"></pre>
+    </div>
+</body>
+
+</html>
