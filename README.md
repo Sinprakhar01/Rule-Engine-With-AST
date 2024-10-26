@@ -50,6 +50,7 @@ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 <h4>Option B: Install MySQL Locally</h4>
 <p>Install and configure MySQL to allow root access with password <code>root</code>. Create a database named <code>rule_engine</code>.</p>
+<p>Run the provided sql file rule_engine_node.sql to import the sample data</p>
 
 <h3>5. Configure Environment Variables</h3>
 <p>In <code>index.py</code>, update the <code>SQLALCHEMY_DATABASE_URI</code> as needed if not using default MySQL Docker setup.</p>
